@@ -32,6 +32,8 @@ Gist is awesome, and currently this write-up is written in Markdown. Unfortunate
 
 Along with that be sure to keep paths consistent between your builds. It is easy to forget if you SSH'd into FreeNAS or into the jail.
 
+Additionally, **do not copy/paste entire chunks of commands**. I often skip over different yes/no options for brevvity in this guide. Read what the prompt says and feel free to drop a comment if answers seem ambiguous.
+
 
 Setting up the jail
 -------------------
