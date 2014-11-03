@@ -270,8 +270,25 @@ Make sure your settings move across the boundary. Daemons might not start up if 
 
 **Crashplan**
 
-Go to the plugins tab and install crashplan under the "Available" tab. This should create a new jail called crashplan_1. Now go to Plugins menu on the right and click Crashplan to accept the license agreement. Finally go to the "Installed" tab and turn the plugin on. Now add the directories you want to backup. Finally, open up a terminal to the jail and perform the following actions:
+*Create a jail using the FreeNAS web UI*
 ```
+Jail name: backup_jail
+IPv4 address: 192.168.1./24
+autostart: checked
+type: portjail
+VIMAGE: unchecked
+vanilla: checked
+```
+
+Now add the directories you want to backup and where the backups should go.
+
+**Ports and dependencies**
+```
+ssh root@192.168.1.2
+jls
+jexec 5 tcsh
+passwd
+portsnap fetch && portsnap extract && portsnap update
 echo 'sshd_enable="YES"' >> /etc/rc.conf
 vi /etc/ssh/sshd_config
 # add the following to the end of the file
@@ -279,6 +296,27 @@ Match User backup
     AllowTcpForwarding yes
 
 adduser # backup with Uid 1002
+```
+Download the java runtime in order to please the CrashPlan overlords (or alternatively, modify the crashplan port scripts):
+http://www.oracle.com/technetwork/java/javase/downloads/index.html
+Scroll down to Java SE 7u71/72 and click JRE Download (third button). Accept the license and download jre-7u71-linux-x64.tar.gz. Then copy it over:
+
+```
+scp ~/Downloads/jre-7u71-linux-i586.tar.gz root@192.168.1.2:/mnt/tetra/backup_jail/usr/ports/distfiles/
+```
+This is just to appease the makefile, and instead we will use OpenJDK's JRE anyways. The following takes quite a while to install.
+
+Install java and crashplan
+```
+cd /usr/ports/java/openjdk8-jre/ && make config-recursive && make install clean
+cd /usr/ports/sysutils/linux-crashplan/ && make config-recursive && make install clean
+echo 'crashplan_enable="YES"' >> /etc/rc.conf
+```
+Now change the default Java binary path:
+
+```
+vi /usr/local/crashplan/install.vars
+  JAVACOMMON=/usr/local/bin/java
 ```
 
 Restart the jail. Now follow [this guide](http://support.code42.com/CrashPlan/Latest/Configuring/Configuring_A_Headless_Client) to modify your current crashplan install to work on the remote machine. You will need to create a port bridge over ssh, which you can do with the following command (before starting up crashplan locally):
