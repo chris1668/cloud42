@@ -334,6 +334,14 @@ ntfs-3g /dev/da1s1 /mnt/usb
 ntfs-3g -o permissions /dev/da1s1 /mnt/usb
 ```
 
+Upgrading
+```
+portsnap fetch upgrade
+cd /usrports/ports-mgmt/pkg && make install clean
+cd /usr/ports/ports-mgmt/portmaster && make install clean
+portmaster -a
+```
+
 Rsync files
 ```
 &rsync --progress --stats --recursive --times --perms --links  --dry-run /mnt/tetra /mnt/usb/tetra
