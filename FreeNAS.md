@@ -19,6 +19,7 @@ ToC
 + [Nginx Webserver](#webserver)
 + [Calibre](#calibre)
 + [TT-RSS](#tt-rss)
++ [OwnCloud](#owncloud)
 
 
 Notes
@@ -189,6 +190,11 @@ echo 'calibre_user="media"' >> /etc/rc.conf
 echo 'calibre_library="/mnt/media/books"' >> /etc/rc.conf
 ```
 
+<a name="owncloud"></a>
+**OwnCloud**
+
+cd /usr/ports/www/owncloud && make config-recursive && make install clean
+
 <a name="webserver"></a>
 **Nginx webserver + PHP + MYSQL**
 
@@ -336,10 +342,10 @@ ntfs-3g -o permissions /dev/da1s1 /mnt/usb
 
 Upgrading
 ```
-portsnap fetch upgrade
+portsnap fetch update
 cd /usrports/ports-mgmt/pkg && make install clean
 cd /usr/ports/ports-mgmt/portmaster && make install clean
-portmaster -a
+portmaster -Raf
 ```
 
 Rsync files
