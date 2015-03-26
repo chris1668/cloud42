@@ -15,7 +15,7 @@ ToC
 + [Subsonic](#subsonic)
 + [Headphones](#headphones)
 + [Plex](#plex)
-+ [Transmission](#transmission)
++ [Deluge](#deluge)
 + [Nginx Webserver](#webserver)
 + [Calibre](#calibre)
 + [TT-RSS](#tt-rss)
@@ -162,20 +162,19 @@ echo 'subsonic_playlist_folder"/mnt/media/music/playlists"' >> /etc/rc.conf
 
 Here is the [subsonic launch script](#file-subsonic) to use.
 
-<a name="transmission"></a>
-**Transmission**
+<a name="deluge"></a>
+**Deluge**
+Uncheck option for  GTK during configuration.
 ```
-cd /usr/ports/net-p2p/transmission-daemon && make config-recursive && make install clean
-echo 'transmission_enable="YES"' >> /etc/rc.conf
-echo 'transmission_user="media"' >> /etc/rc.conf
-echo 'transmission_watch_dir="/mnt/media/downloads/blackhole"' >> /etc/rc.conf
-echo 'transmission_download_dir="/mnt/media/downloads/complete"' >> /etc/rc.conf
-/usr/local/etc/rc.d/transmission start
-/usr/local/etc/rc.d/transmission stop
-vi /usr/local/etc/transmission/home/settings.json
-    "incomplete-dir": "/mnt/media/downloads/incomplete",
-    "incomplete-dir-enabled": true,
-    "rpc-whitelist": "127.0.0.1,192.168.1.*",
+cd /usr/ports/net-p2p/deluge && make WITHOUT_X11=yes config-recursive && make install clean
+mkdir -p /usr/local/deluge
+chown -R media:media /usr/local/deluge
+echo 'deluged_enable="YES"' >> /etc/rc.conf
+echo 'deluged_user="media"' >> /etc/rc.conf
+echo 'deluged_confdir="/usr/local/deluge"' >> /etc/rc.conf
+echo 'deluge_web_enable="YES"' >> /etc/rc.conf
+echo 'deluge_web_user="media"' >> /etc/rc.conf
+echo 'deluge_web_confdir="/usr/local/deluge"' >> /etc/rc.conf
 ```
 
 <a name="calibre"></a>
@@ -241,7 +240,7 @@ service sshd start
 /usr/local/etc/rc.d/headphones start
 /usr/local/etc/rc.d/sabnzbd start
 /usr/local/etc/rc.d/plexmediaserver start
-/usr/local/etc/rc.d/transmission start
+/usr/local/etc/rc.d/deluge start
 /usr/local/etc/rc.d/nginx start
 /usr/local/etc/rc.d/php-fpm start
 /usr/local/etc/rc.d/calibre start
