@@ -99,9 +99,9 @@ echo 'sabnzbd_group="media"' >> /etc/rc.conf
 <a name="sick_beard"></a>
 **Sick Beard**
 ```
-cd /usr/local && git clone git://github.com/midgetspy/Sick-Beard.git sickbeard
+cd /usr/local && git clone git://github.com/SiCKRAGETV/SickRage.git sickbeard
 chown -R media:media sickbeard
-cp /usr/local/sickbeard/init.freebsd /usr/local/etc/rc.d/sickbeard
+cp /usr/local/sickrage/init.freebsd /usr/local/etc/rc.d/sickrage
 echo 'sickbeard_enable="YES"' >> /etc/rc.conf
 echo 'sickbeard_user="media"' >> /etc/rc.conf
 ```
@@ -191,13 +191,17 @@ echo 'calibre_library="/mnt/media/books"' >> /etc/rc.conf
 
 <a name="owncloud"></a>
 **OwnCloud**
-
+First install the php packages below from webserver. Then build owncloud.
+```
+cd /usr/ports/textproc/libxml2/ && make config-recursive && make install clean
+cd /usr/ports/textproc/php5-xsl/ && make config-recursive && make install clean
 cd /usr/ports/www/owncloud && make config-recursive && make install clean
+```
 
 <a name="webserver"></a>
 **Nginx webserver + PHP + MYSQL**
 
-For PHP5-extensions, include: bz2 curl fileinfo gd mbstring mcrypt mysqli openssl pdo_mysql pdo_pgsql pgsql zip
+For PHP5-extensions, include: bz2 curl fileinfo gd mbstring mcrypt mysqli openssl pdo_mysql pdo_pgsql pgsql xsl zip
 
 For PHP5, include: FPM
 ```
@@ -236,7 +240,7 @@ Testing
 ```
 service sshd start
 /usr/local/etc/rc.d/couchpotato start
-/usr/local/etc/rc.d/sickbeard start
+/usr/local/etc/rc.d/sickrage start
 /usr/local/etc/rc.d/headphones start
 /usr/local/etc/rc.d/sabnzbd start
 /usr/local/etc/rc.d/plexmediaserver start
