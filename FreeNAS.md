@@ -56,8 +56,11 @@ jexec 17 tcsh
 passwd
 portsnap fetch update
 portsnap extract
-echo 'sshd_enable="YES"' >> /etc/rc.conf
-echo 'ftpd_enable="YES"' >> /etc/rc.conf
+sysrc sshd_enable=YES
+sysrc ftpd_enable=YES
+cd /usr/ports/ports-mgmt/pkg/ && make deinstall
+cd /usr/ports/ports-mgmt/pkg/ && make install clean
+pkg2ng
 cd /usr/ports/devel/git && make config-recursive && make install clean
 cd /usr/ports/devel/py-cheetah && make install clean
 ```
@@ -91,9 +94,9 @@ Software
 cd /usr/ports/news/sabnzbdplus && make config-recursive && make install clean
 cd /usr/local && mkdir sabnzbd
 chown -R media:media sabnzbd
-echo 'sabnzbd_enable="YES"' >> /etc/rc.conf
-echo 'sabnzbd_user="media"' >> /etc/rc.conf
-echo 'sabnzbd_group="media"' >> /etc/rc.conf
+sysrc sabnzbd_enable=YES
+sysrc sabnzbd_user=media
+sysrc sabnzbd_group=media
 ```
 
 <a name="sick_beard"></a>
@@ -102,8 +105,8 @@ echo 'sabnzbd_group="media"' >> /etc/rc.conf
 cd /usr/local && git clone git://github.com/SiCKRAGETV/SickRage.git sickbeard
 chown -R media:media sickbeard
 cp /usr/local/sickrage/init.freebsd /usr/local/etc/rc.d/sickrage
-echo 'sickbeard_enable="YES"' >> /etc/rc.conf
-echo 'sickbeard_user="media"' >> /etc/rc.conf
+sysrc sickbeard_enable=YES
+sysrc sickbeard_user=media
 ```
 
 <a name="couch_potato"></a>
@@ -113,8 +116,8 @@ cd /usr/local && git clone git://github.com/RuudBurger/CouchPotatoServer.git
 chown -R media:media CouchPotatoServer
 cp /usr/local/CouchPotatoServer/init/freebsd /usr/local/etc/rc.d/couchpotato
 chmod +x /usr/local/etc/rc.d/couchpotato
-echo 'couchpotato_enable="YES"' >> /etc/rc.conf
-echo 'couchpotato_user="media"' >> /etc/rc.conf
+sysrc couchpotato_enable=YES
+sysrc couchpotato_user=media
 ```
 
 <a name="headphones"></a>
@@ -124,8 +127,8 @@ cd /usr/local && git clone git://github.com/rembo10/headphones.git
 chown -R media headphones && chgrp -R media headphones
 cp /usr/local/headphones/init-alt.freebsd /usr/local/etc/rc.d/headphones
 chmod +x /usr/local/etc/rc.d/headphones
-echo 'headphones_enable="YES"' >> /etc/rc.conf
-echo 'headphones_user="media"' >> /etc/rc.conf
+sysrc headphones_enable=YES
+sysrc headphones_user=media
 ```
 
 <a name="plex"></a>
@@ -134,9 +137,9 @@ echo 'headphones_user="media"' >> /etc/rc.conf
 cd /usr/ports/multimedia/plexmediaserver && make install clean
 cd /usr/local && mkdir plexdata
 chown -R media:media plexdata
-echo 'plexmediaserver_enable="YES"' >> /etc/rc.conf
-echo 'plexmediaserver_user="media"' >> /etc/rc.conf
-echo 'plexmediaserver_group="media"' >> /etc/rc.conf
+sysrc plexmediaserver_enable="ES
+sysrc plexmediaserver_user=media
+sysrc plexmediaserver_group=media
 ```
 
 <a name="subsonic"></a>
@@ -153,11 +156,11 @@ vi /usr/local/etc/rc.d/subsonic
 # Use the file "subsonic" attached below
 chmod a+x /usr/local/etc/rc.d/subsonic
 
-echo 'subsonic_enable="YES"' >> /etc/rc.conf
-echo 'subsonic_user="media"' >> /etc/rc.conf
-echo 'subsonic_bin="/usr/local/subsonic/standalone/subsonic.sh"' >> /etc/rc.conf
-echo 'subsonic_podcast_folder="/mnt/media/music/podcasts"' >> /etc/rc.conf
-echo 'subsonic_playlist_folder"/mnt/media/music/playlists"' >> /etc/rc.conf
+sysrc subsonic_enable=YES
+sysrc subsonic_user=media
+sysrc subsonic_bin=/usr/local/subsonic/standalone/subsonic.sh
+sysrc subsonic_podcast_folder=/mnt/media/music/podcasts
+sysrc subsonic_playlist_folder=/mnt/media/music/playlists
 ```
 
 Here is the [subsonic launch script](#file-subsonic) to use.
@@ -169,12 +172,12 @@ Uncheck option for  GTK during configuration.
 cd /usr/ports/net-p2p/deluge && make WITHOUT_X11=yes config-recursive && make install clean
 mkdir -p /usr/local/deluge
 chown -R media:media /usr/local/deluge
-echo 'deluged_enable="YES"' >> /etc/rc.conf
-echo 'deluged_user="media"' >> /etc/rc.conf
-echo 'deluged_confdir="/usr/local/deluge"' >> /etc/rc.conf
-echo 'deluge_web_enable="YES"' >> /etc/rc.conf
-echo 'deluge_web_user="media"' >> /etc/rc.conf
-echo 'deluge_web_confdir="/usr/local/deluge"' >> /etc/rc.conf
+sysrc deluged_enable=YES
+sysrc deluged_user=media
+sysrc deluged_confdir=/usr/local/deluge
+sysrc deluge_web_enable=YES
+sysrc deluge_web_user=media
+sysrc deluge_web_confdir=/usr/local/deluge
 ```
 
 <a name="calibre"></a>
@@ -183,10 +186,10 @@ echo 'deluge_web_confdir="/usr/local/deluge"' >> /etc/rc.conf
 Version is a bit old in the repo. Might consider trying to install from source in the future.
 ```
 cd /usr/ports/deskutils/calibre && make config-recursive && make install clean
-echo 'calibre_enable="YES"' >> /etc/rc.conf
-echo 'calibre_port="8082"' >> /etc/rc.conf
-echo 'calibre_user="media"' >> /etc/rc.conf
-echo 'calibre_library="/mnt/media/books"' >> /etc/rc.conf
+sysrc calibre_enable=YES
+sysrc calibre_port=8082
+sysrc calibre_user=media
+sysrc calibre_library=/mnt/media/books
 ```
 
 <a name="owncloud"></a>
@@ -210,9 +213,9 @@ cd /usr/ports/lang/php5-extensions && make config-recursive && make install clea
 cd /usr/ports/databases/mysql56-server && make config-recursive && make install clean
 cp /usr/local/etc/php.ini-production /usr/local/etc/php.ini
 cd /usr/local/etc/nginx && cp nginx.conf-dist nginx.conf && cp mim.types-dist mime.types
-echo 'nginx_enable="YES"' >> /etc/rc.conf
-echo 'php_fpm_enable="YES"' >> /etc/rc.conf
-echo 'mysql_enable="YES"' >> /etc/rc.conf
+sysrc nginx_enable=YES
+sysrc php_fpm_enable=YES
+sysrc mysql_enable=YES
 /usr/local/etc/rc.d/mysql-server start
 mysql_secure_installation
 ```
@@ -226,7 +229,7 @@ Create a similar [index.html](#file-index-html) as below in folder /usr/local/ww
 Helpful link: http://tt-rss.org/forum/viewtopic.php?f=16&t=911
 ```
 cd /usr/ports/www/tt-rss && make config-recursive && make install clean
-echo 'ttrssd_enable="YES"' >> /etc/rc.conf
+sysrc ttrssd_enable=YES
 mysql -u root -p
 CREATE DATABASE ttrssdb;
 GRANT ALL ON ttrssdb.* TO ttrssuser IDENTIFIED BY "pick some random long password with lots of words BLAMMY";
