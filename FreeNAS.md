@@ -10,7 +10,7 @@ ToC
 
 + [Dependencies](#dependencies)
 + [Couch Potato](#couch_potato)
-+ [Sick Beard](#sick_beard)
++ [SickRage](#sickrage)
 + [Sabnzbd](#sabnzbd)
 + [Subsonic](#subsonic)
 + [Headphones](#headphones)
@@ -61,8 +61,8 @@ sysrc ftpd_enable=YES
 cd /usr/ports/ports-mgmt/pkg/ && make deinstall
 cd /usr/ports/ports-mgmt/pkg/ && make install clean
 pkg2ng
-cd /usr/ports/devel/git && make config-recursive && make install clean
-cd /usr/ports/devel/py-cheetah && make install clean
+cd /usr/ports/devel/git && make config-recursive install clean
+cd /usr/ports/devel/py-cheetah && make config-recursive install clean
 ```
 
 **Create a 'media' user and create media directory**
@@ -91,7 +91,7 @@ Software
 <a name="sabnzbd"></a>
 **Sabnzbd**
 ```
-cd /usr/ports/news/sabnzbdplus && make config-recursive && make install clean
+cd /usr/ports/news/sabnzbdplus && make config-recursive install clean
 cd /usr/local && mkdir sabnzbd
 chown -R media:media sabnzbd
 sysrc sabnzbd_enable=YES
@@ -99,8 +99,8 @@ sysrc sabnzbd_user=media
 sysrc sabnzbd_group=media
 ```
 
-<a name="sick_beard"></a>
-**Sick Beard**
+<a name="sickrage"></a>
+**SickRage**
 ```
 cd /usr/local && git clone git://github.com/SiCKRAGETV/SickRage.git sickbeard
 chown -R media:media sickbeard
@@ -134,7 +134,7 @@ sysrc headphones_user=media
 <a name="plex"></a>
 **Plex**
 ```
-cd /usr/ports/multimedia/plexmediaserver && make install clean
+cd /usr/ports/multimedia/plexmediaserver && make config-recursive install clean
 cd /usr/local && mkdir plexdata
 chown -R media:media plexdata
 sysrc plexmediaserver_enable="ES
@@ -145,7 +145,7 @@ sysrc plexmediaserver_group=media
 <a name="subsonic"></a>
 **Subsonic**
 ```
-cd /usr/ports/java/openjdk6-jre && make config-recursive && make install
+cd /usr/ports/java/openjdk6-jre && make config-recursive install clean
 mkdir -p /usr/local/subsonic/standalone && cd /usr/local/subsonic/standalone
 wget -Osubsonic.tar.gz http://downloads.sourceforge.net/project/subsonic/subsonic/4.9/subsonic-4.9-standalone.tar.gz
 tar -zxvf subsonic.tar.gz
@@ -169,7 +169,7 @@ Here is the [subsonic launch script](#file-subsonic) to use.
 **Deluge**
 Uncheck option for  GTK during configuration.
 ```
-cd /usr/ports/net-p2p/deluge && make WITHOUT_X11=yes config-recursive && make install clean
+cd /usr/ports/net-p2p/deluge && make WITHOUT_X11=yes config-recursive install clean
 mkdir -p /usr/local/deluge
 chown -R media:media /usr/local/deluge
 sysrc deluged_enable=YES
@@ -194,23 +194,22 @@ sysrc calibre_library=/mnt/media/books
 
 <a name="owncloud"></a>
 **OwnCloud**
-First install the php packages below from webserver. Then build owncloud.
 ```
-cd /usr/ports/textproc/libxml2/ && make config-recursive && make install clean
-cd /usr/ports/textproc/php5-xsl/ && make config-recursive && make install clean
-cd /usr/ports/www/owncloud && make config-recursive && make install clean
+cd /usr/local/www/owncloud && make config-recursive install clean
+chown -R media:media /usr/local/www/ownlcoud
 ```
+Make sure to add
 
 <a name="webserver"></a>
 **Nginx webserver + PHP + MYSQL**
 
-For PHP5-extensions, include: bz2 curl fileinfo gd mbstring mcrypt mysqli openssl pdo_mysql pdo_pgsql pgsql xsl zip
+For PHP5-extensions, include: bz2 ctype curl ftp dom exif fileinfo gd gmp iconv json ldap mbstring mcrypt mysql mysqli openssl pdo_mysql pdo_pgsql pdo_sqlite pgsql xsl zip zlib
 
 For PHP5, include: FPM
 ```
-cd /usr/ports/www/nginx && make config-recursive && make install clean
-cd /usr/ports/lang/php5-extensions && make config-recursive && make install clean
-cd /usr/ports/databases/mysql56-server && make config-recursive && make install clean
+cd /usr/ports/www/nginx && make config-recursive install clean
+cd /usr/ports/lang/php56-extensions && make config-recursive install clean
+cd /usr/ports/databases/mysql56-server && make config-recursive install clean
 cp /usr/local/etc/php.ini-production /usr/local/etc/php.ini
 cd /usr/local/etc/nginx && cp nginx.conf-dist nginx.conf && cp mim.types-dist mime.types
 sysrc nginx_enable=YES
@@ -347,11 +346,14 @@ ntfs-3g -o permissions /dev/da1s1 /mnt/usb
 ```
 
 Upgrading
+=========
+Upgrading can be a royal pain... but fear not. Typically you can just run a portmaster -ad, and if it says "conflict... blah blah" just run "pkg delete -f <stupid old package>" then re-run the portmaster command. Eventually everything should be updated!
 ```
+less /usr/ports/UPDATING
 portsnap fetch update
 cd /usrports/ports-mgmt/pkg && make install clean
 cd /usr/ports/ports-mgmt/portmaster && make install clean
-portmaster -Raf
+portmaster -Rafd
 ```
 
 Rsync files
