@@ -33,7 +33,7 @@ Gist is awesome, and currently this write-up is written in Markdown. Unfortunate
 
 Along with that be sure to keep paths consistent between your builds. It is easy to forget if you SSH'd into FreeNAS or into the jail.
 
-Additionally, **do not copy/paste entire chunks of commands**. I often skip over different yes/no options for brevvity in this guide. Read what the prompt says and feel free to drop a comment if answers seem ambiguous.
+Additionally, **do not copy/paste entire chunks of commands**. I often skip over different yes/no options for brevity in this guide. Read what the prompt says and feel free to drop a comment if answers seem ambiguous.
 
 
 Setting up the jail
@@ -46,6 +46,7 @@ autostart: checked
 type: pluginjail
 VIMAGE: unchecked
 vanilla: checked
+sysctls: allow.raw_sockets=true,allow.sysvipc=true
 ```
 
 **Ports and dependencies<a name="#dependencies">**
@@ -61,6 +62,7 @@ sysrc ftpd_enable=YES
 cd /usr/ports/ports-mgmt/pkg/ && make deinstall
 cd /usr/ports/ports-mgmt/pkg/ && make install clean
 pkg2ng
+cd /usr/ports/ports-mgmt/portmaster && make config-recursive install clean
 cd /usr/ports/devel/git && make config-recursive install clean
 cd /usr/ports/devel/py-cheetah && make config-recursive install clean
 ```
@@ -192,14 +194,6 @@ sysrc calibre_user=media
 sysrc calibre_library=/mnt/media/books
 ```
 
-<a name="owncloud"></a>
-**OwnCloud**
-```
-cd /usr/local/www/owncloud && make config-recursive install clean
-chown -R media:media /usr/local/www/ownlcoud
-```
-Make sure to add
-
 <a name="webserver"></a>
 **Nginx webserver + PHP + MYSQL**
 
@@ -208,19 +202,35 @@ For PHP5-extensions, include: bz2 ctype curl ftp dom exif fileinfo gd gmp iconv 
 For PHP5, include: FPM
 ```
 cd /usr/ports/www/nginx && make config-recursive install clean
-cd /usr/ports/lang/php56-extensions && make config-recursive install clean
 cd /usr/ports/databases/mysql56-server && make config-recursive install clean
+cd /usr/ports/databases/postgresql94-server && make config-recursive install clean
+cd /usr/ports/lang/php56-extensions && make config-recursive install clean
 cp /usr/local/etc/php.ini-production /usr/local/etc/php.ini
 cd /usr/local/etc/nginx && cp nginx.conf-dist nginx.conf && cp mim.types-dist mime.types
 sysrc nginx_enable=YES
 sysrc php_fpm_enable=YES
 sysrc mysql_enable=YES
-/usr/local/etc/rc.d/mysql-server start
+sysrc postgresql_enable=YES
+service postgresql initdb
+service postgresql start
+service mysql-server start
 mysql_secure_installation
+su pgsql
+passwd
 ```
 Modify nginx.conf similar to the attached [nginx.conf](#file-nginx-conf) file. Make sure to pay close attention to where "root" is and "location ~ \.php$". You can overwrite the file with ":wq!"
 
 Create a similar [index.html](#file-index-html) as below in folder /usr/local/www.
+<a name="owncloud"></a>
+**OwnCloud**
+```
+cd /usr/local/www/owncloud && make config-recursive install clean
+su pgsql
+createdb ocdb
+psql -s ocdb
+create user <user> password <password>
+GRAND ALL PRIVELEGES ON DATABASE ocdb TO <user>
+```
 
 <a name="tt-rss"></a>
 **Tiny Tiny RSS**
@@ -241,16 +251,17 @@ Testing
 -------
 ```
 service sshd start
-/usr/local/etc/rc.d/couchpotato start
-/usr/local/etc/rc.d/sickrage start
-/usr/local/etc/rc.d/headphones start
-/usr/local/etc/rc.d/sabnzbd start
-/usr/local/etc/rc.d/plexmediaserver start
-/usr/local/etc/rc.d/deluge start
-/usr/local/etc/rc.d/nginx start
-/usr/local/etc/rc.d/php-fpm start
-/usr/local/etc/rc.d/calibre start
-/usr/local/etc/rc.d/subsonic start
+service couchpotato start
+service sickrage start
+service headphones start
+service sabnzbd start
+service plexmediaserver start
+service deluge start
+service nginx start
+service php-fpm start
+service postgres start
+service calibre start
+service subsonic start
 ```
 
 Now check to make sure everything is running fine (<a href="http://192.168.1.3">192.168.1.3</a>). Then shut down the plugin server and start it up again. Everything should still be working fine.
@@ -300,7 +311,7 @@ jls
 jexec 5 tcsh
 passwd
 portsnap fetch && portsnap extract && portsnap update
-echo 'sshd_enable="YES"' >> /etc/rc.conf
+sysrc sshd_enable=YES
 vi /etc/ssh/sshd_config
 # add the following to the end of the file
 Match User backup
@@ -321,7 +332,7 @@ Install java and crashplan
 ```
 cd /usr/ports/java/openjdk8-jre/ && make config-recursive && make install clean
 cd /usr/ports/sysutils/linux-crashplan/ && make config-recursive && make install clean
-echo 'crashplan_enable="YES"' >> /etc/rc.conf
+sysrc crashplan_enable=YES
 ```
 Now change the default Java binary path:
 
