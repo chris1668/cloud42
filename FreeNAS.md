@@ -55,8 +55,8 @@ ssh root@192.168.1.2
 jls
 jexec 17 tcsh
 passwd
+portsnap fetch extract
 portsnap fetch update
-portsnap extract
 sysrc sshd_enable=YES
 sysrc ftpd_enable=YES
 cd /usr/ports/ports-mgmt/pkg/ && make deinstall
@@ -94,7 +94,6 @@ Software
 **Sabnzbd**
 ```
 cd /usr/ports/news/sabnzbdplus && make config-recursive install clean
-cd /usr/local && mkdir sabnzbd
 chown -R media:media sabnzbd
 sysrc sabnzbd_enable=YES
 sysrc sabnzbd_user=media
@@ -104,30 +103,32 @@ sysrc sabnzbd_group=media
 <a name="sickrage"></a>
 **SickRage**
 ```
-cd /usr/local && git clone git://github.com/SiCKRAGETV/SickRage.git sickbeard
-chown -R media:media sickbeard
-cp /usr/local/sickrage/init.freebsd /usr/local/etc/rc.d/sickrage
-sysrc sickbeard_enable=YES
-sysrc sickbeard_user=media
+cd /usr/local && git clone git://github.com/SiCKRAGETV/SickRage.git sickrage
+chown -R media:media sickrage
+cp /usr/local/sickrage/runscripts/init.freebsd /usr/local/etc/rc.d/sickrage
+sysrc sickrage_enable=YES
+sysrc sickrage_user=media
+sysrc sickrage_group=media
 ```
 
 <a name="couch_potato"></a>
 **Couch Potato**
 ```
-cd /usr/local && git clone git://github.com/RuudBurger/CouchPotatoServer.git
-chown -R media:media CouchPotatoServer
-cp /usr/local/CouchPotatoServer/init/freebsd /usr/local/etc/rc.d/couchpotato
+cd /usr/local && git clone git://github.com/RuudBurger/CouchPotatoServer.git couchpotato
+chown -R media:media couchpotato
+cp /usr/local/couchpotato/init/freebsd /usr/local/etc/rc.d/couchpotato
 chmod +x /usr/local/etc/rc.d/couchpotato
 sysrc couchpotato_enable=YES
 sysrc couchpotato_user=media
+sysrc couchpotat_dir=/usr/local/couchpotato
 ```
 
 <a name="headphones"></a>
 **Headphones**
 ```
 cd /usr/local && git clone git://github.com/rembo10/headphones.git
-chown -R media headphones && chgrp -R media headphones
-cp /usr/local/headphones/init-alt.freebsd /usr/local/etc/rc.d/headphones
+chown -R media:media headphones
+cp /usr/local/headphones/init-scripts/init-alt.freebsd /usr/local/etc/rc.d/headphones
 chmod +x /usr/local/etc/rc.d/headphones
 sysrc headphones_enable=YES
 sysrc headphones_user=media
@@ -139,17 +140,18 @@ sysrc headphones_user=media
 cd /usr/ports/multimedia/plexmediaserver && make config-recursive install clean
 cd /usr/local && mkdir plexdata
 chown -R media:media plexdata
-sysrc plexmediaserver_enable="ES
+sysrc plexmediaserver_enable=YES
 sysrc plexmediaserver_user=media
 sysrc plexmediaserver_group=media
 ```
 
 <a name="subsonic"></a>
 **Subsonic**
+The port depends on jetty server and other stuff. I prefer to use openjdk and a standalone install as done below. Use the subsonic start script also attached to the gist.
 ```
-cd /usr/ports/java/openjdk6-jre && make config-recursive install clean
-mkdir -p /usr/local/subsonic/standalone && cd /usr/local/subsonic/standalone
-wget -Osubsonic.tar.gz http://downloads.sourceforge.net/project/subsonic/subsonic/4.9/subsonic-4.9-standalone.tar.gz
+cd /usr/ports/java/openjdk8-jre && make config-recursive install clean
+mkdir -p /usr/local/subsonic && cd /usr/local/subsonic/
+wget -Osubsonic.tar.gz http://subsonic.org/download/subsonic-5.3-standalone.tar.gz
 tar -zxvf subsonic.tar.gz
 rm subsonic.tar.gz
 chown -R media:media /usr/local/subsonic
@@ -160,7 +162,7 @@ chmod a+x /usr/local/etc/rc.d/subsonic
 
 sysrc subsonic_enable=YES
 sysrc subsonic_user=media
-sysrc subsonic_bin=/usr/local/subsonic/standalone/subsonic.sh
+sysrc subsonic_bin=/usr/local/subsonic/subsonic.sh
 sysrc subsonic_podcast_folder=/mnt/media/music/podcasts
 sysrc subsonic_playlist_folder=/mnt/media/music/playlists
 ```
@@ -185,7 +187,6 @@ sysrc deluge_web_confdir=/usr/local/deluge
 <a name="calibre"></a>
 **Calibre**
 
-Version is a bit old in the repo. Might consider trying to install from source in the future.
 ```
 cd /usr/ports/deskutils/calibre && make config-recursive && make install clean
 sysrc calibre_enable=YES
