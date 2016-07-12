@@ -120,6 +120,7 @@ cp /usr/local/couchpotato/init/freebsd /usr/local/etc/rc.d/couchpotato
 chmod +x /usr/local/etc/rc.d/couchpotato
 sysrc couchpotato_enable=YES
 sysrc couchpotato_user=media
+sysrc couchpotato_group=media
 sysrc couchpotat_dir=/usr/local/couchpotato
 ```
 
@@ -132,6 +133,7 @@ cp /usr/local/headphones/init-scripts/init.freebsd /usr/local/etc/rc.d/headphone
 chmod +x /usr/local/etc/rc.d/headphones
 sysrc headphones_enable=YES
 sysrc headphones_user=media
+sysrc headphones_group=media
 ```
 
 <a name="plex"></a>
@@ -163,6 +165,7 @@ chmod a+x /usr/local/etc/rc.d/madsonic
 
 sysrc madsonic_enable=YES
 sysrc madsonic_user=media
+sysrc madsonic_group=media
 sysrc madsonic_bin=/usr/local/madsonic/madsonic.sh
 sysrc madsonic_podcast_folder=/mnt/media/music/podcasts
 sysrc madsonic_playlist_folder=/mnt/media/music/playlists
@@ -179,9 +182,11 @@ mkdir -p /usr/local/deluge
 chown -R media:media /usr/local/deluge
 sysrc deluged_enable=YES
 sysrc deluged_user=media
+sysrc deluged_group=media
 sysrc deluged_confdir=/usr/local/deluge
 sysrc deluge_web_enable=YES
 sysrc deluge_web_user=media
+sysrc deluge_web_group=media
 sysrc deluge_web_confdir=/usr/local/deluge
 ```
 
@@ -193,6 +198,7 @@ cd /usr/ports/deskutils/calibre && make config-recursive && make install clean
 sysrc calibre_enable=YES
 sysrc calibre_port=8082
 sysrc calibre_user=media
+sysrc calibre_group=media
 sysrc calibre_library=/mnt/media/books
 ```
 
@@ -208,7 +214,7 @@ cd /usr/ports/databases/mysql56-server && make config-recursive install clean
 cd /usr/ports/databases/postgresql94-server && make config-recursive install clean
 cd /usr/ports/lang/php56-extensions && make config-recursive install clean
 cp /usr/local/etc/php.ini-production /usr/local/etc/php.ini
-cd /usr/local/etc/nginx && cp nginx.conf-dist nginx.conf && cp mim.types-dist mime.types
+cd /usr/local/etc/nginx && cp nginx.conf-dist nginx.conf && cp mime.types-dist mime.types
 sysrc nginx_enable=YES
 sysrc php_fpm_enable=YES
 sysrc mysql_enable=YES
