@@ -128,7 +128,7 @@ sysrc couchpotat_dir=/usr/local/couchpotato
 ```
 cd /usr/local && git clone git://github.com/rembo10/headphones.git
 chown -R media:media headphones
-cp /usr/local/headphones/init-scripts/init-alt.freebsd /usr/local/etc/rc.d/headphones
+cp /usr/local/headphones/init-scripts/init.freebsd /usr/local/etc/rc.d/headphones
 chmod +x /usr/local/etc/rc.d/headphones
 sysrc headphones_enable=YES
 sysrc headphones_user=media
