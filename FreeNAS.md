@@ -12,7 +12,7 @@ ToC
 + [Couch Potato](#couch_potato)
 + [SickRage](#sickrage)
 + [Sabnzbd](#sabnzbd)
-+ [Subsonic](#subsonic)
++ [Madsonic](#madsonic)
 + [Headphones](#headphones)
 + [Plex](#plex)
 + [Deluge](#deluge)
@@ -145,29 +145,29 @@ sysrc plexmediaserver_user=media
 sysrc plexmediaserver_group=media
 ```
 
-<a name="subsonic"></a>
-**Subsonic**
-The port depends on jetty server and other stuff. I prefer to use openjdk and a standalone install as done below. Use the subsonic start script also attached to the gist.
+<a name="madsonic"></a>
+**Madsonic**
+Discovered madsonic only recently (quite a surprise!). Looks like a great fork of subsonic that includes a number of features for free compared to subsonic. The port depends on jetty server and other stuff. I prefer to use openjdk and a standalone install as done below. Use the subsonic start script also attached to the gist.
 ```
 cd /usr/ports/java/openjdk8-jre && make config-recursive install clean
-mkdir -p /usr/local/subsonic && cd /usr/local/subsonic/
-wget -Osubsonic.tar.gz http://subsonic.org/download/subsonic-5.3-standalone.tar.gz
-tar -zxvf subsonic.tar.gz
-rm subsonic.tar.gz
-chown -R media:media /usr/local/subsonic
+mkdir -p /usr/local/madsonic && cd /usr/local/madsonic
+wget -Omadsonic.tar.gz http://madsonic.org/download/6.0/20160122_madsonic-6.0.7960-standalone.zip
+tar -zxvf madsonic.tar.gz
+rm madsonic.tar.gz
+chown -R media:media /usr/local/madsonic
 
-vi /usr/local/etc/rc.d/subsonic
-# Use the file "subsonic" attached below
-chmod a+x /usr/local/etc/rc.d/subsonic
+vi /usr/local/etc/rc.d/madsonic
+# Use the file "madsonic" attached below
+chmod a+x /usr/local/etc/rc.d/madsonic
 
-sysrc subsonic_enable=YES
-sysrc subsonic_user=media
-sysrc subsonic_bin=/usr/local/subsonic/subsonic.sh
-sysrc subsonic_podcast_folder=/mnt/media/music/podcasts
-sysrc subsonic_playlist_folder=/mnt/media/music/playlists
+sysrc madsonic_enable=YES
+sysrc madsonic_user=media
+sysrc madsonic_bin=/usr/local/madsonic/madsonic.sh
+sysrc madsonic_podcast_folder=/mnt/media/music/podcasts
+sysrc madsonic_playlist_folder=/mnt/media/music/playlists
 ```
 
-Here is the [subsonic launch script](#file-subsonic) to use.
+Here is the [madsonic launch script](#file-madsonic) to use.
 
 <a name="deluge"></a>
 **Deluge**

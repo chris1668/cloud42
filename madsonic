@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# PROVIDE: madsonic
+# REQUIRE: LOGIN DAEMON NETWORKING
+# KEYWORD: shutdown
+#
+# To enable madsonic, add this line to your /etc/rc.conf:
+#
+# madsonic_enable="YES"
+#
+# And optionally these line:
+#
+# madsonic_user="username" # Default is "root"
+# madsonic_bin="/path/to/madsonic.sh" # Default is "/usr/local/sbin/madsonic.sh"
+ 
+. /etc/rc.subr
+ 
+name="madsonic"
+rcvar="madsonic_enable"
+ 
+load_rc_config $name
+ 
+required_files=$madsonic_bin
+ 
+: ${madsonic_enable="NO"}
+: ${madsonic_user="root"}
+: ${madsonic_port="4040"}
+: ${madsonic_home="/usr/local/madsonic"}
+: ${madsonic_bin="${madsonic_home}/madsonic.sh"}
+: ${madsonic_music_folder="/mnt/media/music"}
+: ${madsonic_podcast_folder="/mnt/media/music/podcasts"}
+: ${madsonic_playlist_folder="/mnt/media/music/playlists"}
+: ${madsonic_pidfile="${madsonic_home}/madsonic.pid"}
+
+status_cmd="${name}_status"
+stop_cmd="${name}_stop"
+
+command=$madsonic_bin
+command_args="--pidfile=${madsonic_pidfile} --home=${madsonic_home} --port={madsonic_port} --default-music-folder=${madsonic_music_folder} --default-podcast-folder=${madsonic_podcast_folder} --default-playlist-folder=${madsonic_playlist_folder}"
+
+verify_pid() {
+    pid=`cat ${madsonic_pidfile} 2>/dev/null`
+    ps -p ${pid} | grep -q "madsonic"
+    return $?
+}
+
+madsonic_stop() {
+    echo "Stopping ${name}"
+    verify_pid
+    if [ -n "${pid}" ]; then
+        kill ${sig_stop} ${pid}
+        wait_for_pids ${pid}
+        echo "Stopped"
+    fi
+}
+
+madsonic_status() {
+    verify_pid && echo "${name} is running as ${pid}" || echo "${name} is not running"
+}
+
+run_rc_command "$1"
