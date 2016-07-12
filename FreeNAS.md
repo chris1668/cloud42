@@ -175,7 +175,8 @@ Here is the [madsonic launch script](#file-madsonic) to use.
 
 <a name="deluge"></a>
 **Deluge**
-Uncheck option for  GTK during configuration.
+
+Uncheck option for GTK during configuration.
 ```
 cd /usr/ports/net-p2p/deluge && make WITHOUT_X11=yes config-recursive install clean
 mkdir -p /usr/local/deluge
@@ -377,7 +378,7 @@ portmaster -Rafd
 
 Rsync files
 ```
-&rsync --progress --stats --recursive --times --perms --links  --dry-run /mnt/tetra /mnt/usb/tetra
+&rsync --progress --stats --recursive --times --perms --links --dry-run /mnt/tetra /mnt/usb/tetra
 nohup foo &
 
 rsync -az -H --delete --numeric-ids --stats --progress -e ssh root@192.168.1.2:/mnt/tetra/family /media/jacob/usb/tetra
