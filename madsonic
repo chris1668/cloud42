@@ -12,31 +12,34 @@
 #
 # madsonic_user="username" # Default is "root"
 # madsonic_bin="/path/to/madsonic.sh" # Default is "/usr/local/sbin/madsonic.sh"
- 
+
 . /etc/rc.subr
- 
+
 name="madsonic"
-rcvar="madsonic_enable"
- 
+rcvar="${name}_enable"
+
 load_rc_config $name
- 
+
 required_files=$madsonic_bin
- 
+
 : ${madsonic_enable="NO"}
 : ${madsonic_user="root"}
 : ${madsonic_port="4040"}
 : ${madsonic_home="/usr/local/madsonic"}
 : ${madsonic_bin="${madsonic_home}/madsonic.sh"}
 : ${madsonic_music_folder="/mnt/media/music"}
-: ${madsonic_podcast_folder="/mnt/media/music/podcasts"}
-: ${madsonic_playlist_folder="/mnt/media/music/playlists"}
+: ${madsonic_podcast_folder="${madsonic_music_folder}/podcasts"}
+: ${madsonic_playlist_folder="${madsonic_music_folder}/playlists"}
+: ${madsonic_playlist_import_folder="${madsonic_playlist_folder}/import"}
+: ${madsonic_playlist_export_folder="${madsonic_playlist_folder}/export"}
+: ${madsonic_playlist_backup_folder="${madsonic_playlist_folder}/backup"}
 : ${madsonic_pidfile="${madsonic_home}/madsonic.pid"}
 
 status_cmd="${name}_status"
 stop_cmd="${name}_stop"
 
 command=$madsonic_bin
-command_args="--pidfile=${madsonic_pidfile} --home=${madsonic_home} --port={madsonic_port} --default-music-folder=${madsonic_music_folder} --default-podcast-folder=${madsonic_podcast_folder} --default-playlist-folder=${madsonic_playlist_folder}"
+command_args="--pidfile=${madsonic_pidfile} --home=${madsonic_home} --port={madsonic_port} --default-music-folder=${madsonic_music_folder} --default-podcast-folder=${madsonic_podcast_folder} --default-playlist-import-folder=${madsonic_playlist_import_folder} --default-playlist-export-folder=${madsonic_playlist_export_folder} --default-playlist-backup-folder=${madsonic_playlist_backup_folder}"
 
 verify_pid() {
     pid=`cat ${madsonic_pidfile} 2>/dev/null`
@@ -52,6 +55,8 @@ madsonic_stop() {
         wait_for_pids ${pid}
         echo "Stopped"
     fi
+    
+    rm -f ${madsonic_pidfile}
 }
 
 madsonic_status() {

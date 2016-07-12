@@ -147,7 +147,8 @@ sysrc plexmediaserver_group=media
 
 <a name="madsonic"></a>
 **Madsonic**
-Discovered madsonic only recently (quite a surprise!). Looks like a great fork of subsonic that includes a number of features for free compared to subsonic. The port depends on jetty server and other stuff. I prefer to use openjdk and a standalone install as done below. Use the subsonic start script also attached to the gist.
+
+Discovered madsonic only recently (quite a surprise!). Looks like a great fork of subsonic that includes a number of features for free compared to subsonic. The port depends on jetty server and other stuff. I prefer to use openjdk and a standalone install as done below. Use the madsonic start script also attached to the gist.
 ```
 cd /usr/ports/java/openjdk8-jre && make config-recursive install clean
 mkdir -p /usr/local/madsonic && cd /usr/local/madsonic
@@ -262,7 +263,7 @@ service nginx start
 service php-fpm start
 service postgres start
 service calibre start
-service subsonic start
+service madsonic start
 ```
 
 Now check to make sure everything is running fine (<a href="http://192.168.1.3">192.168.1.3</a>). Then shut down the plugin server and start it up again. Everything should still be working fine.
