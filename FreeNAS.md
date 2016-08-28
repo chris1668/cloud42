@@ -19,7 +19,7 @@ ToC
 + [Nginx Webserver](#webserver)
 + [Calibre](#calibre)
 + [TT-RSS](#tt-rss)
-+ [OwnCloud](#owncloud)
++ [NextCloud](#nextcloud)
 
 
 Notes
@@ -230,10 +230,10 @@ passwd
 Modify nginx.conf similar to the attached [nginx.conf](#file-nginx-conf) file. Make sure to pay close attention to where "root" is and "location ~ \.php$". You can overwrite the file with ":wq!"
 
 Create a similar [index.html](#file-index-html) as below in folder /usr/local/www.
-<a name="owncloud"></a>
-**OwnCloud**
+<a name="nextcloud"></a>
+**NextCloud**
 ```
-cd /usr/local/www/owncloud && make config-recursive install clean
+cd /usr/ports/www/nextcloud && make config-recursive install clean
 su pgsql
 createdb ocdb
 psql -s ocdb
