@@ -367,13 +367,14 @@ ntfs-3g -o permissions /dev/da1s1 /mnt/usb
 
 Upgrading
 =========
-Upgrading can be a royal pain... but fear not. Typically you can just run a portmaster -ad, and if it says "conflict... blah blah" just run "pkg delete -f <stupid old package>" then re-run the portmaster command. Eventually everything should be updated!
+Upgrading can be a royal pain... but fear not. Typically you can just run a portmaster -ad, and if it says "conflict... blah blah" just run "pkg delete -f <stupid old package>" then re-run the portmaster command. Eventually everything should be updated! Many times the update process comes to a grinding halt because of dependency issues. You can kick off a single app to be updated similar below.
 ```
 less /usr/ports/UPDATING
 portsnap fetch update
 cd /usrports/ports-mgmt/pkg && make install clean
 cd /usr/ports/ports-mgmt/portmaster && make install clean
 portmaster -Rafd
+portmaster -fd news/sabnzbdplus
 ```
 
 Rsync files
