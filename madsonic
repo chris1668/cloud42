@@ -39,7 +39,7 @@ status_cmd="${name}_status"
 stop_cmd="${name}_stop"
 
 command=$madsonic_bin
-command_args="--pidfile=${madsonic_pidfile} --home=${madsonic_home} --port={madsonic_port} --default-music-folder=${madsonic_music_folder} --default-podcast-folder=${madsonic_podcast_folder} --default-playlist-import-folder=${madsonic_playlist_import_folder} --default-playlist-export-folder=${madsonic_playlist_export_folder} --default-playlist-backup-folder=${madsonic_playlist_backup_folder}"
+command_args="--pidfile=${madsonic_pidfile} --home=${madsonic_home} --port=${madsonic_port} --default-music-folder=${madsonic_music_folder} --default-podcast-folder=${madsonic_podcast_folder} --default-playlist-import-folder=${madsonic_playlist_import_folder} --default-playlist-export-folder=${madsonic_playlist_export_folder} --default-playlist-backup-folder=${madsonic_playlist_backup_folder}"
 
 verify_pid() {
     pid=`cat ${madsonic_pidfile} 2>/dev/null`
