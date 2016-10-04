@@ -103,7 +103,7 @@ sysrc sabnzbd_group=media
 <a name="sickrage"></a>
 **SickRage**
 ```
-cd /usr/local && git clone git://github.com/SiCKRAGETV/SickRage.git sickrage
+cb /usr/local && git clone git://github.com/SickRage/SickRage.git sickrage
 chown -R media:media sickrage
 cp /usr/local/sickrage/runscripts/init.freebsd /usr/local/etc/rc.d/sickrage
 sysrc sickrage_enable=YES
@@ -408,3 +408,7 @@ rsync -aqz couchpotato/settings.conf couchpotato/couchpotato.db /mnt/tetra/media
 
 cd /usr/local && chmod -R media:media sabnzbd sickbeard headphones CouchPotatoServer
 ```
+
+Notes
+=========
+2016-10-04: SickRageTV was forked to SickRage. Please read about migration [here](https://idmedia.no/general/sickrage-dead-long-live-sickrage/).
