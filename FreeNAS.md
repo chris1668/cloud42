@@ -20,7 +20,10 @@ ToC
 + [Calibre](#calibre)
 + [TT-RSS](#tt-rss)
 + [NextCloud](#nextcloud)
-
++ [Testing](#testing)
++ [Backups](#backups)
++ [Crashplan](#crashplan)
++ [Appendix](#appendix)
 
 Notes
 -----
@@ -230,6 +233,8 @@ passwd
 Modify nginx.conf similar to the attached [nginx.conf](#file-nginx-conf) file. Make sure to pay close attention to where "root" is and "location ~ \.php$". You can overwrite the file with ":wq!"
 
 Create a similar [index.html](#file-index-html) as below in folder /usr/local/www.
+
+
 <a name="nextcloud"></a>
 **NextCloud**
 ```
@@ -256,6 +261,7 @@ chown -R www:www /usr/local/www/tt-rss
 rm /usr/local/www/tt-rss/config.php
 ```
 
+<a name="testing"></a>
 Testing
 -------
 ```
@@ -275,7 +281,7 @@ service madsonic start
 
 Now check to make sure everything is running fine (<a href="http://192.168.1.3">192.168.1.3</a>). Then shut down the plugin server and start it up again. Everything should still be working fine.
 
-
+<a name="Backups"></a>
 Backups
 -------
 
@@ -299,6 +305,7 @@ cp /mnt/tetra/plugins_1/usr/local/CouchPotatoServer/data/couchpotato.db /mnt/tet
 
 Make sure your settings move across the boundary. Daemons might not start up if ip's, filepaths, etc. are different.
 
+<a name="crashplan"></a>
 **Crashplan**
 
 *Create a jail using the FreeNAS web UI*
@@ -365,6 +372,7 @@ ntfs-3g /dev/da1s1 /mnt/usb
 ntfs-3g -o permissions /dev/da1s1 /mnt/usb
 ```
 
+<a name="upgrading"></a>
 Upgrading
 =========
 Upgrading can be a royal pain... but fear not. Typically you can just run a portmaster -ad, and if it says "conflict... blah blah" just run "pkg delete -f <stupid old package>" then re-run the portmaster command. Eventually everything should be updated! Many times the update process comes to a grinding halt because of dependency issues. You can kick off a single app to be updated similar below.
@@ -409,6 +417,7 @@ rsync -aqz couchpotato/settings.conf couchpotato/couchpotato.db /mnt/tetra/media
 cd /usr/local && chmod -R media:media sabnzbd sickbeard headphones CouchPotatoServer
 ```
 
-Notes
+<a name="appendix"></a>
+Appendix
 =========
 2016-10-04: SickRageTV was forked to SickRage. Please read about migration [here](https://idmedia.no/general/sickrage-dead-long-live-sickrage/).
