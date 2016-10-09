@@ -381,6 +381,7 @@ less /usr/ports/UPDATING
 portsnap fetch update
 cd /usrports/ports-mgmt/pkg && make install clean
 cd /usr/ports/ports-mgmt/portmaster && make install clean
+pkg version -l '<'
 portmaster -Rafd
 portmaster -fd news/sabnzbdplus
 ```
