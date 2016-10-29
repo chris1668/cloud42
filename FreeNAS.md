@@ -141,6 +141,7 @@ sysrc headphones_group=media
 
 <a name="plex"></a>
 **Plex**
+
 ```
 cd /usr/ports/multimedia/plexmediaserver && make config-recursive install clean
 cd /usr/local && mkdir plexdata
@@ -149,6 +150,8 @@ sysrc plexmediaserver_enable=YES
 sysrc plexmediaserver_user=media
 sysrc plexmediaserver_group=media
 ```
+
+There has been new security settings added and there was a problem with the plex scanner making a request to a local agent. To fix it you should add `192.168.1.0/24` to Settings -> Server -> Network -> Enabled Advanced -> "List of IP Address and networks that are allowed without auth" add `192.168.1.0/24`. After that, click refresh all and the scanner should be able to connect to the local agent.
 
 <a name="madsonic"></a>
 **Madsonic**
