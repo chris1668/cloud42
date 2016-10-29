@@ -181,7 +181,7 @@ Here is the [madsonic launch script](#file-madsonic) to use.
 
 Uncheck option for GTK during configuration.
 ```
-cd /usr/ports/net-p2p/deluge && make WITHOUT_X11=yes config-recursive install clean
+cd /usr/ports/net-p2p/deluge-cli && make WITHOUT_X11=yes config-recursive install clean
 mkdir -p /usr/local/deluge
 chown -R media:media /usr/local/deluge
 sysrc deluged_enable=YES
@@ -375,7 +375,7 @@ ntfs-3g -o permissions /dev/da1s1 /mnt/usb
 <a name="upgrading"></a>
 Upgrading
 =========
-Upgrading can be a royal pain... but fear not. Typically you can just run a portmaster -ad, and if it says "conflict... blah blah" just run "pkg delete -f <stupid old package>" then re-run the portmaster command. Eventually everything should be updated! Many times the update process comes to a grinding halt because of dependency issues. You can kick off a single app to be updated similar below.
+Upgrading can be a royal pain... but fear not. Typically you can just run a portmaster -ad, and if it says "conflict... blah blah" just run "pkg delete -f <stupid old package>" then re-run the portmaster command. Eventually everything should be updated! Many times the update process comes to a grinding halt because of dependency issues. You can kick off a single app to be updated similar below. You will also want to review /usr/ports/UPDATING if you run into trouble to see if a port has changed. There is usually a command to migrate a package such as a `portmaster -o oldpackage newpackage`.
 ```
 less /usr/ports/UPDATING
 portsnap fetch update
