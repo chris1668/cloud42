@@ -15,6 +15,7 @@ ToC
 + [Madsonic](#madsonic)
 + [Headphones](#headphones)
 + [Plex](#plex)
++ [PlexPy](#plexpy)
 + [Deluge](#deluge)
 + [Nginx Webserver](#webserver)
 + [Calibre](#calibre)
@@ -153,6 +154,20 @@ sysrc plexmediaserver_group=media
 
 There has been new security settings added and there was a problem with the plex scanner making a request to a local agent. To fix it you should add `192.168.1.0/24` to Settings -> Server -> Network -> Enabled Advanced -> "List of IP Address and networks that are allowed without auth" add `192.168.1.0/24`. After that, click refresh all and the scanner should be able to connect to the local agent.
 
+<a name="plexpy"></a>
+**PlexPy**
+
+```
+cd /usr/local && git clone https://github.com/JonnyWong16/plexpy.git
+chown -R media:media plexpy
+cp /usr/local/plexpy/init-scripts/init.freebsd /usr/local/etc/rc.d/plexpy
+chmod +x /usr/local/etc/rc.d/plexpy
+sysrc plexpy_enable=YES
+sysrc plexpy_user=media
+sysrc plexpy_dir=/usr/local/plexpy
+sysrc plexpy_port=8083
+```
+
 <a name="madsonic"></a>
 **Madsonic**
 
@@ -280,6 +295,7 @@ service php-fpm start
 service postgres start
 service calibre start
 service madsonic start
+service plexpy start
 ```
 
 Now check to make sure everything is running fine (<a href="http://192.168.1.3">192.168.1.3</a>). Then shut down the plugin server and start it up again. Everything should still be working fine.
