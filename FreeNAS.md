@@ -356,10 +356,10 @@ adduser # backup with Uid 1002
 ```
 Download the java runtime in order to please the CrashPlan overlords (or alternatively, modify the crashplan port scripts):
 http://www.oracle.com/technetwork/java/javase/downloads/index.html
-Scroll down to Java SE 7u71/72 and click JRE Download (third button). Accept the license and download jre-7u71-linux-x64.tar.gz. Then copy it over:
+Scroll down to Java SE 8u111/112 and click JRE Download (third button). Accept the license and download jdk-8u112-linux-i586.tar.gz. Then scp or ftp it over:
 
 ```
-scp ~/Downloads/jre-7u71-linux-i586.tar.gz root@192.168.1.2:/mnt/tetra/backup_jail/usr/ports/distfiles/
+scp ~/Downloads/jdk-8u112-linux-i586.tar.gz root@192.168.1.2:/mnt/tetra/backup_jail/usr/ports/distfiles/
 ```
 This is just to appease the makefile, and instead we will use OpenJDK's JRE anyways. The following takes quite a while to install.
 
@@ -372,7 +372,7 @@ sysrc crashplan_enable=YES
 Now change the default Java binary path:
 
 ```
-vi /usr/local/crashplan/install.vars
+vi /usr/local/share/crashplan/install.vars
   JAVACOMMON=/usr/local/bin/java
 ```
 
@@ -380,6 +380,7 @@ Restart the jail. Now follow [this guide](http://support.code42.com/CrashPlan/La
 ```
 ssh -L 4200:localhost:4243 backup@192.168.1.4
 ```
+And grab the file /var/lib/crashplan/.ui_info from the server and bring it to your local host where you will run the crashplan desktop client.
 
 Helpful codes
 -------------
