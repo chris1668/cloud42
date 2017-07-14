@@ -31,8 +31,8 @@ Notes
 Gist is awesome, and currently this write-up is written in Markdown. Unfortunately that means you'll have to replace a bunch of references to:
 
 + **tetra**: My zpool
-+ **192.168.1.2**: My static FreeNAS ip
-+ **192.168.1.3**: My static media jail ip
++ **192.168.1.5**: My static FreeNAS ip
++ **192.168.1.22**: My static media jail ip
 + **192.168.1.4**: My static backup jail ip
 
 Along with that be sure to keep paths consistent between your builds. It is easy to forget if you SSH'd into FreeNAS or into the jail.
@@ -74,11 +74,12 @@ cd /usr/ports/devel/py-cheetah && make config-recursive install clean
 **Create a 'media' user and create media directory**
 ```
 mkdir /mnt/media
-adduser
+pw usermod media -d /home/media -s /bin/tcsh
+
 Username   : media
 Password   : <blank>
 Full Name  : Media
-Uid        : 1001
+Uid        : 8675309
 Class      : 
 Groups     : media 
 Home       : /home/media
@@ -107,7 +108,7 @@ sysrc sabnzbd_group=media
 <a name="sickrage"></a>
 **SickRage**
 ```
-cb /usr/local && git clone git://github.com/SickRage/SickRage.git sickrage
+cb /usr/local && git clone git://github.com/SiCKRAGE/SickRage.git sickrage
 chown -R media:media sickrage
 cp /usr/local/sickrage/runscripts/init.freebsd /usr/local/etc/rc.d/sickrage
 sysrc sickrage_enable=YES
@@ -131,7 +132,7 @@ sysrc couchpotat_dir=/usr/local/couchpotato
 <a name="headphones"></a>
 **Headphones**
 ```
-cd /usr/local && git clone git://github.com/rembo10/headphones.git
+cd /usr/local && git clone git://github.com/rembo10/headphones.git headphones
 chown -R media:media headphones
 cp /usr/local/headphones/init-scripts/init.freebsd /usr/local/etc/rc.d/headphones
 chmod +x /usr/local/etc/rc.d/headphones
@@ -158,7 +159,7 @@ There has been new security settings added and there was a problem with the plex
 **PlexPy**
 
 ```
-cd /usr/local && git clone https://github.com/JonnyWong16/plexpy.git
+cd /usr/local && git clone https://github.com/JonnyWong16/plexpy.git plexpy
 chown -R media:media plexpy
 cp /usr/local/plexpy/init-scripts/init.freebsd /usr/local/etc/rc.d/plexpy
 chmod +x /usr/local/etc/rc.d/plexpy
